@@ -1,7 +1,7 @@
 import os
 import cv2
 import sys
-
+# show path in training/ testing file
 def show_path(path):
     imgs = open(path, 'r').readlines()
 
