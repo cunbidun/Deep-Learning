@@ -34,3 +34,4 @@ Note:
 #### 07.04.19
 * [How To Switch Between Intel and Nvidia Graphics Card on Ubuntu](https://www.linuxbabe.com/desktop-linux/switch-intel-nvidia-graphics-card-ubuntu)
 * [How do I access command line arguments in Python? - Stack Overflow](https://stackoverflow.com/questions/4033723/how-do-i-access-command-line-arguments-in-python)
+* [Writing a Simple Bash Script](https://www.linux.com/learn/writing-simple-bash-script)
