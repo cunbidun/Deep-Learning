@@ -4,7 +4,7 @@ import shutil
 
 FISRT_ITEM = 1
 LAST_ITEM = 10
-COPY_DIR = '../MNIST/Data/testing/'
+COPY_DIR = '..'
 PASTE_DIR ='./test/'
 
 cnt = FISRT_ITEM - 1

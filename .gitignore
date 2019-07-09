@@ -1,4 +1,6 @@
 /MAFA
-ILSVRC12.zip
-/Mask*
 /MNIST
+/ILSVRC12
+/Mask \Recognition/data/
+/Mask \Recognition/maskOr/
+/.vscode
