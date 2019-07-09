@@ -5,3 +5,7 @@
 
 ### 07.05.19
 * Write createDataSet.sh
+* Install VGG16
+
+### 07.09.19
+* Install sklearn
