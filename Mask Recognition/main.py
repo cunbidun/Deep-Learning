@@ -16,8 +16,6 @@ plt.ion()   # interactive mode
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-# Data augmentation and normalization for training
-# Just normalization for validation
 data_transforms = {
     'train': transforms.Compose([
         transforms.RandomResizedCrop(224),
@@ -43,7 +41,7 @@ dataset_sizes = {x: len(image_datasets[x]) for x in ['train', 'val']}
 
 
 
-def train_model(model, criterion, optimizer, scheduler, num_epochs = 3):
+def train_model(model, criterion, optimizer, scheduler, num_epochs):
     since = time.time()
 
     best_model_wts = copy.deepcopy(model.state_dict())
@@ -111,21 +109,37 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs = 3):
     return model
 
 
+# model_ft = models.resnet18(pretrained=True)
 
-model_ft = models.resnet18(pretrained=True)
-num_ftrs = model_ft.fc.in_features
-model_ft.fc = nn.Linear(num_ftrs, 2)
+# num_ftrs = model_ft.fc.in_features
+
+# model_ft.fc = nn.Linear(num_ftrs, 2)
+
+# model_ft = model_ft.to(device)
+
+# criterion = nn.CrossEntropyLoss()
+
+# optimizer_ft = optim.SGD(model_ft.parameters(), lr=0.001, momentum=0.9)
+
+# exp_lr_scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)
+
+# model_ft = train_model(model_ft, criterion, optimizer_ft, exp_lr_scheduler, num_epochs=2)
+
+# torch.save(model_ft, './six.pt')
+
+
+model_ft = models.vgg16(pretrained=True)
+
+model_ft.classifier[6] = nn.Linear(4096, 2)
 
 model_ft = model_ft.to(device)
 
 criterion = nn.CrossEntropyLoss()
 
-# Observe that all parameters are being optimized
 optimizer_ft = optim.SGD(model_ft.parameters(), lr=0.001, momentum=0.9)
 
-# Decay LR by a factor of 0.1 every 7 epochs
 exp_lr_scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)
 
-model_ft = train_model(model_ft, criterion, optimizer_ft, exp_lr_scheduler, num_epochs=2)
+model_ft = train_model(model_ft, criterion, optimizer_ft, exp_lr_scheduler, 4)
 
-torch.save(model_ft, './second.pt')
+torch.save(model_ft, './tenth.pt')

@@ -13,8 +13,13 @@ import os
 import copy
 import cv2
 plt.ion()   # interactive mode
-
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
+TESTSET = 'test'
+MODEL = 'VGG16 90P 95B.pt'
+model = models.vgg16()
+model = torch.load(MODEL)
+model.eval()
 
 def imshow(inp, title=None):
     """Imshow for Tensor."""
@@ -23,6 +28,13 @@ def imshow(inp, title=None):
     std = np.array([0.229, 0.224, 0.225])
     inp = std * inp + mean
     inp = np.clip(inp, 0, 1)
+
+    red = inp[:,:,2].copy()
+    blue = inp[:,:,0].copy()
+
+    inp[:,:,0] = red
+    inp[:,:,2] = blue
+
     cv2.imshow(title, inp)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
@@ -30,7 +42,7 @@ def imshow(inp, title=None):
 # Data augmentation and normalization for training
 # Just normalization for validation
 data_transforms = {
-    'test': transforms.Compose([
+    TESTSET: transforms.Compose([
         transforms.Resize(256),
         transforms.CenterCrop(224),
         transforms.ToTensor(),
@@ -40,21 +52,22 @@ data_transforms = {
 
 data_dir = './data/'
 image_datasets = {x: datasets.ImageFolder(os.path.join(data_dir, x), data_transforms[x])
-                  for x in ['test']}
+                  for x in [TESTSET]}
 dataloaders = {x: torch.utils.data.DataLoader(image_datasets[x], batch_size=1,
                                              shuffle=True, num_workers=6)
-              for x in ['test']}
-dataset_sizes = {x: len(image_datasets[x]) for x in ['test']}
-class_names = image_datasets['test'].classes
+              for x in [TESTSET]}
+dataset_sizes = {x: len(image_datasets[x]) for x in [TESTSET]}
+class_names = image_datasets[TESTSET].classes
 
-model = models.resnet18()
-model = torch.load('second.pt')
-model.eval()
+# model = models.resnet18()
+# model = torch.load('second.pt')
+# model.eval()
+
 
 
 correct = 0
-total = 111
-for inputs, labels in dataloaders['test']:
+total = 0
+for inputs, labels in dataloaders[TESTSET]:
     out = torchvision.utils.make_grid(inputs)
     title=[class_names[x] for x in labels]
     
@@ -63,11 +76,11 @@ for inputs, labels in dataloaders['test']:
     
     outputs = model(inputs)
     _, preds = torch.max(outputs, 1)
-
+    total = total + 1
     correct += torch.sum(preds == labels.data)
     if preds != labels.data :
-        print ("predictio: " + [class_names[x] for x in preds][0])
+        print ("WA: " + [class_names[x] for x in preds][0])
         imshow(out, title[0])
 
 print("correct: {}".format(correct))
-print("ratio: {}".format(correct.double()/total))
+print("ratio: {}".format(correct.double() / total))

@@ -1,5 +1,8 @@
 /MAFA
 /ILSVRC12
 /Mask \Recognition/data/
-/Mask \Recognition/maskOr/
+/Mask \Recognition/MASK/
+/Mask \Recognition/NOMASK/
+/Mask \Recognition/VGG*
+
 /.vscode
